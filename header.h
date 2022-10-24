@@ -7,8 +7,14 @@
 
 #define MASTER		0
 
+const double A_1 = -1;
+const double A_2 = -1;
+const double A_3 = 0;
+const double B_1 = 1;
+const double B_2 = 1;
+const double B_3 = 1;
 const double I = M_PI / 6;
-double VOLUME = M_PI / 3;
+double VOLUME = (B_1 - A_1) * (B_2 - A_2) * (B_3 - A_3);
 const uint64_t MAX_SAMPLES_COUNT = 10;
 const uint64_t MAX_ITER_COUNT = 10000000;
 
