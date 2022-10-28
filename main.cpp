@@ -13,13 +13,19 @@ int main(int argc, char **argv) {
 	double current_sum = 0;
 	double res_value = 0;
 	double all_sum = 0;
-	double eps = atof(argv[1]);
+	double eps = 0.001;
 	double max_prog_time = 0;
 
 	// Init	
 	MPI_Comm comm_gr;
 	MPI_Status stat;
 	MPI_Init(&argc, &argv);
+    if(argc < 2)
+    {
+        print_usage();
+        MPI_Abort(MPI_COMM_WORLD, 1);
+    }
+    eps = atof(argv[1]);
 	MPI_Comm_size(MPI_COMM_WORLD, &NODE_COUNT);
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	srand(rank + 1);
@@ -96,4 +102,14 @@ double generate_values()
 		current_sum += f_func(x, y, z);
 	}
 	return current_sum / (NODE_COUNT * MAX_SAMPLES_COUNT);
+}
+
+void print_usage()
+{
+    int rank;
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    if(rank==0)
+    {
+        printf("Usage: mpirun -np [num-procs] ./monte_carlo [epsilon-value]\n");
+    }
 }

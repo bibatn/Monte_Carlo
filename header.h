@@ -20,6 +20,7 @@ const uint64_t MAX_ITER_COUNT = 10000000;
 
 int NODE_COUNT = 0;
 
+void print_usage();
 double generate_values();
 double f_func(double x, double y, double z);
 
