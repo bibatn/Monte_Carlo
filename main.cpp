@@ -13,19 +13,16 @@ int main(int argc, char **argv) {
 	double current_sum = 0;
 	double res_value = 0;
 	double all_sum = 0;
-	double eps = 0.001;
+	double epsilon = 0.001;
 	double max_prog_time = 0;
 
-	// Init	
-	MPI_Comm comm_gr;
-	MPI_Status stat;
 	MPI_Init(&argc, &argv);
     if(argc < 2)
     {
         print_usage();
         MPI_Abort(MPI_COMM_WORLD, 1);
     }
-    eps = atof(argv[1]);
+    epsilon = atof(argv[1]);
 	MPI_Comm_size(MPI_COMM_WORLD, &NODE_COUNT);
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	srand(rank + 1);
@@ -47,7 +44,7 @@ int main(int argc, char **argv) {
 			res_value = VOLUME * count_value / iter_count;
 			tol = abs(I - res_value);
 
-			if (tol < eps)
+			if (tol < epsilon)
             {
 				is_tol_enough = true;
 			}
@@ -73,7 +70,7 @@ int main(int argc, char **argv) {
 	// Display result
 	if (rank == MASTER)
     {
-        std::cout << "Proc count: " << NODE_COUNT << "\nEPS: " << eps  << std::endl;
+        std::cout << "Proc count: " << NODE_COUNT << "\nepsilon: " << epsilon << std::endl;
         std::cout << "Result: " << res_value << "\nTol: " << tol << "\nTime: " << max_prog_time << std::endl;
 	}
 
