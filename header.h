@@ -4,8 +4,7 @@
 #include <cmath>
 #include <stdint.h>
 #include <cstring>
-
-#define MASTER		0
+#include <iostream>
 
 const double A_1 = -1;
 const double A_2 = -1;

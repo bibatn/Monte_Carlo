@@ -5,7 +5,7 @@ using namespace std;
 int main(int argc, char **argv) {
 	int rank = -1;
 	int iter_count = 1;
-	bool is_tol_enough = false;
+	int is_tol_enough = 0;
 	double start_time = 0;
 	double prog_time = 0;
 	double count_value = 0;
@@ -35,11 +35,10 @@ int main(int argc, char **argv) {
 		// Generate sum of F func values
 		current_sum = generate_values();
 
-		MPI_Reduce(&current_sum, &all_sum, 1, MPI_DOUBLE, MPI_SUM, MASTER, MPI_COMM_WORLD);
+		MPI_Reduce(&current_sum, &all_sum, 1, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
 
-		if (rank == MASTER)
+		if (rank == 0)
         {
-			// Master
 			count_value += all_sum;
 			res_value = VOLUME * count_value / iter_count;
 			tol = abs(I - res_value);
@@ -49,8 +48,10 @@ int main(int argc, char **argv) {
 				is_tol_enough = true;
 			}
 		}
+            MPI_Bcast(&is_tol_enough, 1, MPI_INT, 0, MPI_COMM_WORLD);
 
-		iter_count++;
+
+        iter_count++;
 	}
 	
 	prog_time = MPI_Wtime() - start_time;
@@ -63,16 +64,16 @@ int main(int argc, char **argv) {
     {
         std::cout << "Решение сошлось к заданной наперед точности." << std::endl;
 	}
+//    std::cout << "I'm here1" << std::endl;
 
-	// Count time
-	MPI_Reduce(&prog_time, &max_prog_time, 1, MPI_DOUBLE, MPI_MAX, MASTER, MPI_COMM_WORLD);
 
 	// Display result
-	if (rank == MASTER)
+	if (rank == 0)
     {
         std::cout << "Proc count: " << NODE_COUNT << "\nepsilon: " << epsilon << std::endl;
-        std::cout << "Result: " << res_value << "\nTol: " << tol << "\nTime: " << max_prog_time << std::endl;
+        std::cout << "Result: " << res_value << "\nTol: " << tol << "\nTime: " << prog_time << std::endl;
 	}
+//    std::cout << "I'm here2" << std::endl;
 
 	MPI_Finalize();
 	return 0;
