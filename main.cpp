@@ -40,7 +40,7 @@ int main(int argc, char **argv) {
 		if (rank == 0)
         {
 			count_value += all_sum;
-			res_value = VOLUME * count_value / iter_count;
+			res_value = 4 * VOLUME * count_value / iter_count;
 			tol = abs(I - res_value);
 
 			if (tol < epsilon)

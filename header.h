@@ -6,8 +6,8 @@
 #include <cstring>
 #include <iostream>
 
-const double A_1 = -1;
-const double A_2 = -1;
+const double A_1 = 0;
+const double A_2 = 0;
 const double A_3 = 0;
 const double B_1 = 1;
 const double B_2 = 1;
