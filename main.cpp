@@ -28,7 +28,8 @@ int main(int argc, char **argv) {
 	srand(rank + 1);
 	
 	// Start
-	start_time = MPI_Wtime();
+    MPI_Barrier(MPI_COMM_WORLD);
+    start_time = MPI_Wtime();
 
 	while (!is_tol_enough && iter_count < MAX_ITER_COUNT)
     {
@@ -53,11 +54,10 @@ int main(int argc, char **argv) {
 
         iter_count++;
 	}
-    MPI_Reduce(&prog_time, &max_prog_time, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
-	
 	prog_time = MPI_Wtime() - start_time;
+    MPI_Reduce(&prog_time, &max_prog_time, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
 
-	if (!is_tol_enough)
+    if (!is_tol_enough)
     {
         std::cout << "Пройдено максимальное кол-во итераций." << std::endl;
 	}
