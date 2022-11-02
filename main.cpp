@@ -53,6 +53,7 @@ int main(int argc, char **argv) {
 
         iter_count++;
 	}
+    MPI_Reduce(&prog_time, &max_prog_time, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
 	
 	prog_time = MPI_Wtime() - start_time;
 
@@ -71,7 +72,7 @@ int main(int argc, char **argv) {
 	if (rank == 0)
     {
         std::cout << "Proc count: " << NODE_COUNT << "\nepsilon: " << epsilon << std::endl;
-        std::cout << "Result: " << res_value << "\nTol: " << tol << "\nTime: " << prog_time << std::endl;
+        std::cout << "Result: " << res_value << "\nTol: " << tol << "\nTime: " << max_prog_time << std::endl;
 	}
 //    std::cout << "I'm here2" << std::endl;
 
